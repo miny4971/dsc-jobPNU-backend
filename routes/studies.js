@@ -3,11 +3,15 @@
 const express  = require('express');
 const router = express.Router();
 const Study = require('../models/study');
-
+const User = require('../models/user');
 // Index 
 router.post("/", (req, res) => {
   Study.create(req.body)
     .then((study) => {
+      // console.log(study)
+      Study.findById(study).populate("user").exec((err, study) => {
+        console.log(study)
+      })
       res.status(201).json(study);
     })
     .catch((error) => {
@@ -21,15 +25,9 @@ router.get("/", async (req, res) => {
   res.status(200).json(studies);
 });
 
+// User.findOne()
+//   .then(r => console.log(r.id, r._id)) 
 
-
-// show
-// router.get('/:id', function(req, res){
-//   Post.findOne({_id:req.params.id}, function(err, post){
-//     if(err) return res.json(err);
-//     res.render('studies/show', {post:post});
-//   });
-// });
 
 
 
